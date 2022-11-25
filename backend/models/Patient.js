@@ -51,5 +51,5 @@ const Patient = db.define("Patient", {
 }, { freezeTableName: true });
 
 Patient.hasMany(Treatment);
-
+Patient.sync();
 export default Patient;

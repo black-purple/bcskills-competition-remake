@@ -29,6 +29,6 @@ const Treatment = db.define("Treatment", {
     }
 }, { freezeTableName: true });
 
-Traitement.belongsTo(Patient);
-
+Treatment.belongsTo(Patient);
+Treatment.sync();
 export default Treatment;
