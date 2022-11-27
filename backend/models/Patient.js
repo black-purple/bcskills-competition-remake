@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { db } from "../db/dbConnection.js";
-import Treatment from "./Treatment.js";
+import { Treatment } from "./Treatment.js";
 
 const Patient = db.define("Patient", {
     folderid: {
@@ -26,14 +26,14 @@ const Patient = db.define("Patient", {
     profession: {
         type: DataTypes.STRING
     },
-    adresse: {
+    address: {
         type: DataTypes.STRING
     },
     ssn: {
         type: DataTypes.STRING
     },
     tel: {
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
     },
     guardian: {
         type: DataTypes.STRING
@@ -51,5 +51,4 @@ const Patient = db.define("Patient", {
 }, { freezeTableName: true });
 
 Patient.hasMany(Treatment);
-Patient.sync();
-export default Patient;
+export { Patient };

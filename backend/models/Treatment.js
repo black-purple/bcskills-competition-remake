@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { db } from "../db/dbConnection.js";
-import Patient from "./Patient.js";
+import { Patient } from "./Patient.js";
 
 const Treatment = db.define("Treatment", {
     traitementid: {
@@ -29,6 +29,4 @@ const Treatment = db.define("Treatment", {
     }
 }, { freezeTableName: true });
 
-Treatment.belongsTo(Patient);
-Treatment.sync();
-export default Treatment;
+export { Treatment };
