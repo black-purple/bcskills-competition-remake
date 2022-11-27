@@ -1,9 +1,8 @@
 import { DataTypes } from "sequelize";
 import { db } from "../db/dbConnection.js";
-import { Patient } from "./Patient.js";
 
 const Treatment = db.define("Treatment", {
-    traitementid: {
+    treatmentid: {
         primaryKey: true,
         autoIncrement: true,
         type: DataTypes.BIGINT
@@ -26,6 +25,9 @@ const Treatment = db.define("Treatment", {
     decision: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    patient: {
+        type: DataTypes.STRING
     }
 }, { freezeTableName: true });
 

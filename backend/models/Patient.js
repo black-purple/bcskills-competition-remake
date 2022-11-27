@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { db } from "../db/dbConnection.js";
-import { Treatment } from "./Treatment.js";
 
 const Patient = db.define("Patient", {
     folderid: {
@@ -50,5 +49,4 @@ const Patient = db.define("Patient", {
     }
 }, { freezeTableName: true });
 
-Patient.hasMany(Treatment);
 export { Patient };
