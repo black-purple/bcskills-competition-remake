@@ -10,7 +10,7 @@ A simple web app to keep track of patients in a clinic/hospital
     ![NodeJS](https://img.shields.io/static/v1?label=%20&message=NodeJS&color=%23339933&labelColor=%23ff000000&logo=node.js)
     ![MySQL](https://img.shields.io/static/v1?label=%20&message=MySQL&color=%234479A1&labelColor=%23ff000000&logo=mysql)
 
-- Frontend (Web App):
+- Frontend (SPA):
 
     >```Under construction```
 
