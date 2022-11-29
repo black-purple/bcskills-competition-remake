@@ -14,7 +14,6 @@ async function getPatient(req, res) {
 }
 
 async function getAllPatients(req, res) {
-<<<<<<< HEAD
     const { limit, skip } = req.query;
     const patients = await Patient.findAll({ where: { archived: false }, limit: +limit || 5, offset: +skip || 0 });
     res.status(200).json(patients);
@@ -24,17 +23,6 @@ async function getAllArchivedPatients(req, res) {
     const { limit, skip } = req.query;
     const archivedPatients = await Patient.findAll({ where: { archived: true }, limit: +limit || 5, offset: +skip || 0 });
     res.status(200).json(archivedPatients);
-=======
-    //TODO add pagination
-    const patients = await Patient.findAll({where: {archived : false}});
-    res.status(200).json(patients?.toJSON());
-}
-
-async function getAllArchivedPatients(req, res) {
-    //TODO Add paginatio
-    const archivedPatients = await Patient.findAll({where: {archived : true}});
-    res.status(200).json(archivedPatients?.toJSON());
->>>>>>> c0e633b05a110029a94673b3b22c92317fa2f2ee
 }
 
 async function editPatient(req, res) {
