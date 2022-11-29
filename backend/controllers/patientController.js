@@ -14,11 +14,13 @@ async function getPatient(req, res) {
 }
 
 async function getAllPatients(req, res) {
+    //TODO add pagination
     const patients = await Patient.findAll({where: {archived : false}});
     res.status(200).json(patients?.toJSON());
 }
 
 async function getAllArchivedPatients(req, res) {
+    //TODO Add paginatio
     const archivedPatients = await Patient.findAll({where: {archived : true}});
     res.status(200).json(archivedPatients?.toJSON());
 }
