@@ -161,7 +161,7 @@ const HeaderIcon = styled.div`
         width:150%;
         background:rgba(182, 178, 178, 0.685);
         top:50%;
-        letf:0;
+        left:0;
         position:absolute;
     }
     &:before{
@@ -170,7 +170,7 @@ const HeaderIcon = styled.div`
         width:48px;
         background:rgba(182, 178, 178, 0.685);
         top:50%;
-        letf:0;
+        left:0;
         position:absolute;
         transform: translateX(-100%)
     }
