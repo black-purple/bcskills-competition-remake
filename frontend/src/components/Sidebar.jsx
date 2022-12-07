@@ -7,29 +7,29 @@ export default function Sidebar(){
     const location = useLocation();
     return(
         <>
-            <Sidebarr class="sidebar">
-                <Profile class="profile">
-                    <ProfileImgName class="profile_imgname">
-                        <ProfileImg class="profile_img"></ProfileImg>
+            <Sidebarr >
+                <Profile >
+                    <ProfileImgName >
+                        <ProfileImg ></ProfileImg>
                         <p>Mossaab</p>
                     </ProfileImgName>
-                    <div class="logout">
+                    <div >
                         <form method="post">
-                            <LogoutBtn type="submit" class="logout-btn" name="logout">
-                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <LogoutBtn type="submit" name="logout">
+                                <i className="fa-solid fa-arrow-right-from-bracket"></i>
                             </LogoutBtn>
                         </form>
                     </div>
                 </Profile>
-                <Menu class="menu">
-                    <MenuTitle class="menu_title">Dashboard</MenuTitle>
-                    <div class="menu_elm">
+                <Menu >
+                    <MenuTitle >Dashboard</MenuTitle>
+                    <div >
                         <MenuUl>
                             <NavLinkS to={"/"} >
-                                <MenuLi isActive ={location.pathname=="/"?true:false}><i class="fa-regular fa-folder" style={{"padding": "0 10px"}}></i>Dossier</MenuLi>
+                                <MenuLi isActive ={location.pathname=="/"?true:false}><i className="fa-regular fa-folder" style={{"padding": "0 10px"}}></i>Dossier</MenuLi>
                             </NavLinkS>
                             <NavLinkS to={"/archive"} >
-                                <MenuLi isActive ={location.pathname=="/archive"?true:false}><i class="fa-solid fa-box-archive" style={{"padding": "0 10px"}}></i>Archive</MenuLi>
+                                <MenuLi isActive ={location.pathname=="/archive"?true:false}><i className="fa-solid fa-box-archive" style={{"padding": "0 10px"}}></i>Archive</MenuLi>
                             </NavLinkS>
                         </MenuUl>
                     </div>

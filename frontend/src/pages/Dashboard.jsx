@@ -1,8 +1,47 @@
 import Sidebar from "../components/Sidebar";
 import styled from "styled-components"
 import {Link, useNavigate} from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { claerarchivedpatient, getPatients, PatientsState, PatientsStatus, archivePatient, ArchivePatientsStatus} from "../store/features/patientsSlice";
+import { nanoid } from "@reduxjs/toolkit";
+import { useState } from "react";
+
 export default function Dashboard(){
+    const [skip, setSkip] = useState(0);
+    const [currpage, setCurrpage] = useState(0);
+    const Selector_patientState = useSelector(PatientsState);
+    const Selector_patientStateStatus = useSelector(PatientsStatus);
+    const Selector_ArchiveActionStatus = useSelector(ArchivePatientsStatus);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    useEffect(() => {
+        dispatch(getPatients());
+        // setSkip(0);//!
+        setCurrpage(0);
+    }, [Selector_ArchiveActionStatus,dispatch])//?status
+    useEffect(()=>{
+        dispatch(getPatients(skip));
+    },[skip])
+    useEffect(()=>{
+        if(Selector_patientState.length==0 && Selector_patientStateStatus=='success' && currpage!=0){
+            setSkip(prev=>prev-5)
+        }
+    },[Selector_patientState])
+    console.log('statussss',Selector_patientStateStatus);
+    console.log(Selector_patientState);
+    console.log(Selector_ArchiveActionStatus);
+    const SkipPage=(action)=>{
+        if(currpage==0){setCurrpage(1)}
+        if(action=='next'){
+            setSkip(prev=>(Selector_patientState.length==0?prev:prev+5))
+        }else if(action=='prev'){
+            setSkip(prev=>(prev==0?prev:prev-5));
+        }
+    }
+    const clearArchive = ()=>{
+        dispatch(claerarchivedpatient())
+    }
     return(
         <WrapperAll >
             <Wrapper >
@@ -17,7 +56,7 @@ export default function Dashboard(){
                             <Titleh5>Dossier patient</Titleh5>
                             <TableHeader >
                                 <div >
-                                    <Btnaction onClick={()=>{navigate('dossier/addpatient')}}><i class="fa-solid fa-user-plus"></i> &nbsp;Add patient</Btnaction>
+                                    <Btnaction onClick={()=>{navigate('dossier/addpatient')}}><i className="fa-solid fa-user-plus"></i> &nbsp;Add patient</Btnaction>
                                 </div>
                                 <SearchI >
                                     <SearchInput type="input" placeholder="search"/>
@@ -31,22 +70,29 @@ export default function Dashboard(){
                                     <ActionInfo >action</ActionInfo>
                                 </TableBodyNav>
                                 <div >
-                                    <TableBodyInfo >
-                                        <Cin ><Link to={'dossier/viewpatient'}>JG2345</Link></Cin>
-                                        <FullName >mossaab amimar</FullName>
-                                        <Sexe ><P gender={'male'}>male</P></Sexe>
-                                        <ActionInfo >
-                                            <form method='post'>
-                                                <BtnactionLink to={"dossier/addpatient"}><i class="fa-solid fa-file-waveform"></i> &nbsp;Add traitement</BtnactionLink>
-                                                <Btnaction type='submit' name='archive'><i class='fa-solid fa-box-archive'></i> &nbsp;Archive</Btnaction>
-                                                <Btnaction type='submit' name='archive' onClick={()=>{navigate('dossier/viewpatient')}}><i class='fa-solid fa-box-archive'></i> &nbsp;Edit patient</Btnaction>
-                                            </form>
-                                        </ActionInfo>
-                                    </TableBodyInfo>
+                                    {Selector_patientState.map(e=>
+                                    (   <TableBodyInfo key={nanoid()}>
+                                            <Cin ><Link to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}>{e.cin}</Link></Cin>
+                                            <FullName >{e.fullname}</FullName>
+                                            <Sexe ><P gender={e.sexe}>{e.sexe==="H"?"homme":"femme"}</P></Sexe>
+                                            <ActionInfo >
+                                                <form method='post'>
+                                                    <BtnactionLink to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}><i className="fa-solid fa-file-waveform"></i> &nbsp;Add traitement</BtnactionLink>
+                                                    <BtnactionLink to={`dossier/viewpatient/${e.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit patient</BtnactionLink>
+                                                    <Btnaction type='button' name='archive' onClick={()=>dispatch(archivePatient(e.cin))}><i className='fa-solid fa-box-archive'></i> &nbsp;Archive</Btnaction>
+                                                </form>
+                                            </ActionInfo>
+                                        </TableBodyInfo>
+                                    )
+                                    )}
                                 </div>
                             </TableBody>
+                            <Btnaction type='button' onClick={()=>SkipPage('prev')}><i className="fa-solid fa-caret-left" ></i></Btnaction>
+                            <Btnaction type='button' onClick={()=>SkipPage('next')}><i className="fa-solid fa-caret-right"></i></Btnaction>
                         </InfoTable>
                     </div>
+
+
                 </DashboardBody>
             </Wrapper>
         </WrapperAll>
@@ -174,5 +220,5 @@ const ActionInfo = styled.div`
     // width: 350px;
 `
 const P = styled.p`
-    color:${props=>props.gender=='male'?"#2DA9D9":"#B73377"}
+    color:${props=>props.gender=='H'?"#2DA9D9":"#B73377"}
 `

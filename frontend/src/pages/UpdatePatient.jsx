@@ -94,38 +94,6 @@ export default function Test(){
                                 </FormRow>
                             </FormDiv>
                         </FormsContainer>
-                        {/* <FormsContainer >
-                            <FormTitle >Traitements : </FormTitle>
-                            <FormDiv  action="">
-                                <FormRow >
-                                    <div >
-                                        <FormLabel Htmlfor="">doctor name</FormLabel> <br/>
-                                        <FormInput type="text" name="nom"/>
-                                    </div>
-                                    <div >
-                                        <FormLabel Htmlfor="">consultation date</FormLabel> <br/>
-                                        <DateInput type="date" name="daten"/>
-                                    </div>
-                                </FormRow>
-                                <FormRow >
-                                    <div >
-                                        <FormLabel Htmlfor="">conclusion</FormLabel> <br/>
-                                        <FormInput type="text" name="cin"/>
-                                    </div>
-                                    <div >
-                                        <FormLabel Htmlfor="">desision</FormLabel> <br/>
-                                        <FormSelect name="sexe" id="">
-                                            <option value="decision1">decision1</option>
-                                            <option value="decision2">decision2</option>
-                                        </FormSelect>
-                                        
-                                    </div>
-                                </FormRow>
-                                <Wbtn><UpdateBtn color="#5c73db" type="submit" name="addp"> Ajouter Traitements</UpdateBtn></Wbtn>
-                            
-
-                            </FormDiv>
-                        </FormsContainer> */}
                         <FormsContainer>
                         <FormTitle>Traitements :</FormTitle>
                             <TraitementTable>

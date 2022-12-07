@@ -1,8 +1,77 @@
 import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
-import {Link, useLocation} from "react-router-dom";
+import { nanoid } from "@reduxjs/toolkit";
+import { useLocation, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { PatientEditederr, addTraitement, getPatient, PatientState, getTraitements, PatientStatus, editPatient, TraitementsState, TraitementsStatus } from "../store/features/patientsSlice";
+import { useEffect, useState } from "react";
+
 export default function Test(){
     const location = useLocation();
+    const dispatch = useDispatch();
+    const {id} = useParams();
+    const [Patient,setPatient] = useState({
+        address : "",
+        alerts: "",
+        archived: false,
+        birthdate: "",
+        cin: "",
+        folderid: 1,
+        fullname: "",
+        guardian: "",
+        insurance: "",
+        profession: "",
+        sexe: "",
+        ssn: "",
+        tel: "",
+    })
+    const[optt,setoptt] = useState({
+        select1:['H','F'],
+        select2:['ATLANTIC','SMONO','AMO','CNSS'],
+        select3:['deci1','deci2'],
+    })
+    const [Traitement, setTraitement] = useState({
+        doctorname: "",
+        consultationdate:"",
+        consultationdetails: "",
+        conclusion: "",
+        decision: "",
+        patient:id
+    })
+    const Selector_TraitementsState = useSelector(TraitementsState);
+    const Selector_TraitementsStatus = useSelector(TraitementsStatus);
+    const Selector_PatientState = useSelector(PatientState);
+    const Selector_PatientStatus = useSelector(PatientStatus);
+    const Selector_PatientEditederr = useSelector(PatientEditederr);
+    console.log(Selector_PatientEditederr);
+    console.log("patient:",Selector_PatientStatus);
+    console.log("traitement:",Selector_TraitementsStatus);
+    useEffect(()=>{
+        console.log('call');
+        dispatch(getPatient(id))
+        dispatch(getTraitements(id))
+    },[dispatch])
+    useEffect(()=>{
+        setPatient(Selector_PatientState);
+        // console.log(Selector_PatientState);
+    },[Selector_PatientState])
+    const HandleChange = (e)=>{
+        console.log("e.name:",e.name)
+        console.log("e.value:",e.value)
+        setPatient(prev=>({...prev,[e.name]:e.value}));
+        setTraitement(prev=>({...prev,[e.name]:e.value}))
+    }
+    const HanldeSubmit = (e)=>{
+        e.preventDefault();
+        console.log('old',Patient)
+        dispatch(editPatient(Patient))
+    }
+    const HandleSubmitTraitement = (e)=>{
+        e.preventDefault();
+        console.log(Traitement);
+        const {doctorname, consultationdate, consultationdetails, conclusion, decision, patient} = Traitement;
+        dispatch(addTraitement({doctorname, consultationdate, consultationdetails, conclusion, decision, patient}));
+    }
     return(
         <WrapperAll >
             <Wrapper >
@@ -17,7 +86,7 @@ export default function Test(){
                     <FormsWrapper  method="post">
                         <PatientHeader >
                             {/* <HeaderTitle  >Dossier patients</HeaderTitle> */}
-                            <HeaderIcon ><i class="fa-regular fa-folder"></i></HeaderIcon>
+                            <HeaderIcon ><i className="fa-regular fa-folder"></i></HeaderIcon>
                         </PatientHeader>
                         <FormsContainer >
                             <FormTitle >Identification : </FormTitle>
@@ -25,23 +94,26 @@ export default function Test(){
                                 <FormRow >
                                     <div >
                                         <FormLabel Htmlfor="">nom complet</FormLabel> <br/>
-                                        <FormInput type="text" name="nom"/>
+                                        <FormInput type="text" name="fullname" defaultValue={Selector_PatientState.fullname} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                     <div >
                                         <FormLabel Htmlfor="">date de naissance</FormLabel> <br/>
-                                        <DateInput type="date" name="daten"/>
+                                        <DateInput type="date" name="birthdate" defaultValue={Selector_PatientState.birthdate} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                 </FormRow>
                                 <FormRow >
                                     <div >
                                         <FormLabel Htmlfor="">CIN</FormLabel> <br/>
-                                        <FormInput type="text" name="cin"/>
+                                        <FormInput type="text" readOnly={true} name="cin" defaultValue={Selector_PatientState.cin} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                     <div >
                                         <FormLabel Htmlfor="">sexe</FormLabel> <br/>
-                                        <FormSelect name="sexe" id="">
-                                            <option value="Homme">Homme</option>
-                                            <option value="Femme">Femme</option>
+                                        <FormSelect name="sexe" id="" value={Patient.sexe} onChange={(e) => HandleChange(e.target)}>
+                                        {
+                                            optt.select1.map(e=>(
+                                                <option value={e} key={nanoid()}>{e}</option>
+                                            ))
+                                        }
                                         </FormSelect>
                                     </div>
                                 </FormRow>
@@ -53,43 +125,44 @@ export default function Test(){
                                 <FormRow >
                                     <div >
                                         <FormLabel Htmlfor="">adresse</FormLabel> <br/>
-                                        <FormInput type="text" name="adresse"/>
+                                        <FormInput type="text" name="address" defaultValue={Selector_PatientState.address} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                     <div >
 
                                         <FormLabel Htmlfor="">téléphone</FormLabel> <br/>
-                                        <FormInput type="text" name="tel"/>
+                                        <FormInput type="text" name="tel" defaultValue={Selector_PatientState.tel} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
 
                                     <div >
                                         <FormLabel Htmlfor="">payeurs</FormLabel> <br/>
-                                        <FormInput type="num" name="payeurs"/>
+                                        <FormInput type="text" name="guardian" defaultValue={Selector_PatientState.guardian} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                 </FormRow>
 
                                 <FormRow >
                                     <div >
                                         <FormLabel Htmlfor="">proffesion</FormLabel> <br/>
-                                        <FormInput type="text" name="profession"/>
+                                        <FormInput type="text" name="profession" defaultValue={Selector_PatientState.profession} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                     <div >
                                         <FormLabel Htmlfor="">numéro de sécurité sociale</FormLabel> <br/>
-                                        <FormInput type="text" name="secsoc"/>
+                                        <FormInput type="text" name="ssn" defaultValue={Selector_PatientState.ssn} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                     <div >
                                         <FormLabel Htmlfor="">mutuelle</FormLabel> <br/>
-                                        <FormSelect name="mutuelle" id="">
-                                            <option value="ATLANTIC" selected>ATLANTIC</option>
-                                            <option value="SMONO">SMONO</option>
-                                            <option value="AMO">AMO</option>
-                                            <option value="CNSS">CNSS</option>
+                                        <FormSelect name="insurance" id="" value={Patient.insurance} onChange={(e) => HandleChange(e.target)}>
+                                            {
+                                            optt.select2.map(e=>(
+                                                <option value={e} key={nanoid()}>{e}</option>
+                                            ))
+                                        }
                                         </FormSelect>
                                     </div>
                                 </FormRow>
                                 <FormRow >
                                     <div >
                                         <FormLabel Htmlfor="">données d'alertes</FormLabel> <br/>
-                                        <FormInput type="text" name="alertes"/>
+                                        <FormInput type="text" name="alerts" defaultValue={Selector_PatientState.alerts} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                 </FormRow>
                             </FormDiv>
@@ -100,28 +173,38 @@ export default function Test(){
                                 <FormRow >
                                     <div >
                                         <FormLabel Htmlfor="">doctor name</FormLabel> <br/>
-                                        <FormInput type="text" name="nom"/>
+                                        <FormInput type="text" name="doctorname" value={Traitement.doctorname} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                     <div >
-                                        <FormLabel Htmlfor="">consultation date</FormLabel> <br/>
-                                        <DateInput type="date" name="daten"/>
+                                        <FormLabel Htmlfor="">consultation details</FormLabel> <br/>
+                                        <DateInput type="text" name="consultationdetails" value={Traitement.consultationdetails} onChange={(e) => HandleChange(e.target)}/>
+                                    </div>
+                                    <div >
+                                        <FormLabel Htmlfor="">consultation details</FormLabel> <br/>
+                                        <DateInput type="date" name="consultationdate" value={Traitement.consultationdate} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                 </FormRow>
                                 <FormRow >
                                     <div >
                                         <FormLabel Htmlfor="">conclusion</FormLabel> <br/>
-                                        <FormInput type="text" name="cin"/>
+                                        <FormInput type="text" name="conclusion" value={Traitement.conclusion} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                     <div >
                                         <FormLabel Htmlfor="">desision</FormLabel> <br/>
-                                        <FormSelect name="sexe" id="">
-                                            <option value="decision1">decision1</option>
-                                            <option value="decision2">decision2</option>
+                                        <FormSelect name="decision" value={Traitement.decision} onChange={(e) => HandleChange(e.target)}>//!value
+                                            {
+                                                optt.select3.map(e=>(
+                                                <option value={e} key={nanoid()}>{e}</option>
+                                                ))
+                                            }
                                         </FormSelect>
                                         
                                     </div>
                                 </FormRow>
-                                <Wbtn><UpdateBtn color="#5c73db" type="submit" name="addp"> Ajouter Traitements</UpdateBtn></Wbtn>
+                                <Wbtn istraitement={false}>
+                                    <UpdateBtn color="#5c73db" type="submit" name="addp" /*onClick={(e)=>HandleSubmitTraitement(e)}*/> update Traitements</UpdateBtn>
+                                    <UpdateBtn color="#5c73db" type="submit" name="addp"onClick={(e)=>HandleSubmitTraitement(e)}> Ajouter Traitements</UpdateBtn>
+                                </Wbtn>
                             
 
                             </FormDiv>
@@ -131,30 +214,26 @@ export default function Test(){
                             <TraitementTable>
                                 <TableHeader >
                                     <NomMedecin >Nom de medecin</NomMedecin>
-                                    <Date >Date de la conclusion</Date>
+                                    <Date >conclusion date</Date>
                                     <Conclusion >conclusion</Conclusion>
                                     <Decisions >Decision</Decisions>
                                     <Action >action</Action>
                                 </TableHeader>
                                 <TableBody >
-                                    <BodyRow >
-                                        <NomMedecin >mossaab amimar</NomMedecin>
-                                        <Date >22/22/22</Date>
-                                        <Conclusion >Radiographe</Conclusion>
-                                        <Decisions >confirme</Decisions>
-                                        <Action ><i class="fa-solid fa-trash"></i></Action>
-                                    </BodyRow>
-                                    <BodyRow >
-                                        <NomMedecin >mossaab amimar</NomMedecin>
-                                        <Date >22/22/22</Date>
-                                        <Conclusion >Radiographe</Conclusion>
-                                        <Decisions >confirme</Decisions>
-                                        <Action ><i class="fa-solid fa-trash"></i></Action>
-                                    </BodyRow>
+                                    {Selector_TraitementsState.length==0?<Exeption>no traitement</Exeption>:Selector_TraitementsState.map(e=>(
+                                        <BodyRow key={nanoid()}>
+                                            <NomMedecin >{e.doctorname}</NomMedecin>
+                                            <Date >{e.consultationdate.split('T')[0]}</Date>
+                                            <Conclusion >{e.conclusion}</Conclusion>
+                                            <Decisions >{e.decision}</Decisions>
+                                            <Action ><i className="fa-solid fa-pen-to-square"></i></Action>
+                                        </BodyRow>
+                                    ))}
+
                                 </TableBody>
                             </TraitementTable>
                         </FormsContainer>
-                        <Wbtn><UpdateBtn type="submit" name="addp"> Ajouter </UpdateBtn></Wbtn>
+                        <Wbtn istraitement={true}><UpdateBtn  type="submit" name="addp" onClick={(e)=>HanldeSubmit(e)}> Update </UpdateBtn></Wbtn>
                     </FormsWrapper>
                 </DashboardBody>
             </Wrapper>
@@ -288,7 +367,8 @@ const Wbtn = styled.div`
     justify-content: flex-start;
     margin-bottom: 1rem;
     width:90%;
-    margin-left:320px;
+    margin-left:${props=>props.istraitement?"320px":"0"};
+    // background:red;
 `
 const UpdateBtn = styled.div`
     outline: 0;
@@ -305,6 +385,8 @@ const UpdateBtn = styled.div`
         cursor:pointer;
         background-color:#017ede;
     }
+    margin:0 10px 0 0;
+
 `
 const DateInput = styled.input`
     margin-top: 8px;
@@ -335,6 +417,9 @@ const TableHeader = styled.div`
 const TableBody = styled.div`
     background:pink;
 `
+const Exeption = styled.p`
+    padding:5px;
+`
 const BodyRow = styled.div`
     height:100px;
     background-color: rgba(234, 234, 237, 0.882);
@@ -345,16 +430,20 @@ const BodyRow = styled.div`
     padding:0 5px
 `
 const NomMedecin = styled.div`
-    width: 200px;
+    width: 180px;
 `
 const Date = styled.div`
-    width: 250px;
+    width: 150px;
 `
 const Conclusion = styled.div`
-    width: 150px;
+    width: 220px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding:0 5px 0 0;
 `
 const Decisions = styled.div`
-    width: 150px;
+    width: 130px;
 `
 const Action = styled.div`
     width: 50px;

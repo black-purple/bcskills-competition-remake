@@ -1,100 +1,145 @@
 import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
-import {NavLink, useLocation} from "react-router-dom";
+import { nanoid } from "@reduxjs/toolkit";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch,useSelector } from "react-redux";
+import { addPatient, /*PatientAddStatus*/ } from "../store/features/patientsSlice";
+import { useEffect, useState } from "react";
 export default function Addpatient(){
     const location = useLocation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // const Selector_AddPatientStatus = useSelector(PatientAddStatus);
+    const [Patient,setPatient] = useState({
+        address : "",
+        alerts: "",
+        archived: false,
+        birthdate: "",
+        cin: "",
+        folderid: 1,
+        fullname: "",
+        guardian: "",
+        insurance: "ATLANTIC",
+        profession: "",
+        sexe: "H",
+        ssn: "",
+        tel: "",
+    })
+    const[optt,setoptt] = useState({
+        select1:['H','F'],
+        select2:['ATLANTIC','SMONO','AMO','CNSS'],
+    })
+    useEffect(()=>{
+        console.log('call');
+        // dispatch(getArchivedPatient(id))
+    },[dispatch])
+    const HandleChange = (e)=>{
+        console.log("e.name:",e.name)
+        console.log("e.value:",e.value)
+        setPatient(prev=>({...prev,[e.name]:e.value}))
+    }
+    const HanldeSubmit = (e)=>{
+        e.preventDefault();
+        dispatch(addPatient(Patient));
+        console.log(Patient);
+        navigate('../../')
+    }
     return(
         <WrapperAll >
             <Wrapper >
                 <Sidebar/>
                 <DashboardBody >
                     <div>
-                        <BodyNav class="body_nav">
-                            <div class="icons"></div>
-                            <BodyNavTitle class="title"> <BodyNavSpan>Dashbords / </BodyNavSpan> {location.pathname.slice(1).split('/').join(' / ')} </BodyNavTitle>
+                        <BodyNav >
+                            <div></div>
+                            <BodyNavTitle> <BodyNavSpan>Dashbords / </BodyNavSpan> {location.pathname.slice(1).split('/').join(' / ')} </BodyNavTitle>
                         </BodyNav>
                     </div>
-                    <FormsWrapper class="forms" method="post">
-                        <PatientHeader className="patientHeader">
+                    <FormsWrapper method="post">
+                        <PatientHeader >
                             {/* <HeaderTitle className="pHeaderTitle" >Dossier patients</HeaderTitle> */}
-                            <HeaderIcon className="pHeaderIcon" ><i class="fa-regular fa-folder"></i></HeaderIcon>
+                            <HeaderIcon ><i className="fa-regular fa-folder"></i></HeaderIcon>
                         </PatientHeader>
-                        <FormsContainer class="form_container">
-                            <FormTitle class="form_title">identification : </FormTitle>
-                            <FormDiv class="form" action="">
-                                <FormRow class="row">
-                                    <div class="item">
+                        <FormsContainer >
+                            <FormTitle>identification : </FormTitle>
+                            <FormDiv action="">
+                                <FormRow>
+                                    <div >
                                         <FormLabel Htmlfor="">nom complet</FormLabel> <br/>
-                                        <FormInput type="text" name="nom"/>
+                                        <FormInput type="text" name="fullname" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
-                                    <div class="item">
+                                    <div >
                                         <FormLabel Htmlfor="">date de naissance</FormLabel> <br/>
-                                        <DateInput type="date" name="daten"/>
+                                        <DateInput type="date" name="birthdate" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                 </FormRow>
-                                <FormRow class="row">
-                                    <div class="item">
+                                <FormRow >
+                                    <div >
                                         <FormLabel Htmlfor="">CIN</FormLabel> <br/>
-                                        <FormInput type="text" name="cin"/>
+                                        <FormInput type="text" name="cin" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
-                                    <div class="item">
+                                    <div >
                                         <FormLabel Htmlfor="">sexe</FormLabel> <br/>
-                                        <FormSelect name="sexe" id="">
-                                            <option value="Homme">Homme</option>
-                                            <option value="Femme">Femme</option>
+                                        <FormSelect name="sexe" id="" value={Patient.sexe} onChange={(e) => HandleChange(e.target)}>
+                                        {
+                                            optt.select1.map(e=>(
+                                                <option value={e} key={nanoid()}>{e}</option>
+                                            ))
+                                        }
                                         </FormSelect>
                                     </div>
                                 </FormRow>
                             </FormDiv>
                         </FormsContainer>
-                        <FormsContainer class="form_container">
-                            <FormTitle class="form_title"><p>informations : </p></FormTitle>
-                            <FormDiv class="form">
-                                <FormRow class="row">
-                                    <div class="item">
+                        <FormsContainer >
+                            <FormTitle ><p>informations : </p></FormTitle>
+                            <FormDiv >
+                                <FormRow >
+                                    <div >
                                         <FormLabel Htmlfor="">adresse</FormLabel> <br/>
-                                        <FormInput type="text" name="adresse"/>
+                                        <FormInput type="text" name="address" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
-                                    <div class="item">
+                                    <div >
 
                                         <FormLabel Htmlfor="">téléphone</FormLabel> <br/>
-                                        <FormInput type="text" name="tel"/>
+                                        <FormInput type="text" name="tel" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
 
-                                    <div class="item">
+                                    <div >
                                         <FormLabel Htmlfor="">payeurs</FormLabel> <br/>
-                                        <FormInput type="num" name="payeurs"/>
+                                        <FormInput type="text" name="guardian" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                 </FormRow>
 
-                                <FormRow class="row">
-                                    <div class="item">
+                                <FormRow >
+                                    <div >
                                         <FormLabel Htmlfor="">proffesion</FormLabel> <br/>
-                                        <FormInput type="text" name="profession"/>
+                                        <FormInput type="text" name="profession" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
-                                    <div class="item">
+                                    <div >
                                         <FormLabel Htmlfor="">numéro de sécurité sociale</FormLabel> <br/>
-                                        <FormInput type="text" name="secsoc"/>
+                                        <FormInput type="text" name="ssn" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
-                                    <div class="item">
+                                    <div >
                                         <FormLabel Htmlfor="">mutuelle</FormLabel> <br/>
-                                        <FormSelect name="mutuelle" id="">
-                                            <option value="ATLANTIC" selected>ATLANTIC</option>
-                                            <option value="SMONO">SMONO</option>
-                                            <option value="AMO">AMO</option>
-                                            <option value="CNSS">CNSS</option>
+                                        <FormSelect name="insurance" id="" value={Patient.insurance} onChange={(e) => HandleChange(e.target)}>
+                                        {
+                                            optt.select2.map(e=>(
+                                                <option value={e} key={nanoid()}>{e}</option>
+                                            ))
+                                        }
                                         </FormSelect>
                                     </div>
                                 </FormRow>
-                                <FormRow class="row">
-                                    <div class="item">
+                                <FormRow >
+                                    <div >
                                         <FormLabel Htmlfor="">données d'alertes</FormLabel> <br/>
-                                        <FormInput type="text" name="alertes"/>
+                                        <FormInput type="text" name="alerts" onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                 </FormRow>
                             </FormDiv>
                         </FormsContainer>
-                        <Wbtn class="btn"><UpdateBtn class="btn_update" type="submit" name="addp"> Ajouter </UpdateBtn></Wbtn>
+                        <Wbtn ><UpdateBtn  type="submit" name="addp" onClick={(e)=>HanldeSubmit(e)}> Ajouter </UpdateBtn></Wbtn>
                     </FormsWrapper>
                 </DashboardBody>
             </Wrapper>
