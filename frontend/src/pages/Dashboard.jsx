@@ -66,10 +66,10 @@ export default function Dashboard(){
                             </TableHeader>
                             <TableBody >
                                 <TableBodyNav >
-                                    <Cin >cin</Cin>
-                                    <FullName >nom complet</FullName>
-                                    <Sexe>sex</Sexe>
-                                    <ActionInfo >action</ActionInfo>
+                                    <Cin >CIN</Cin>
+                                    <FullName >NOM COMPLET</FullName>
+                                    <Sexe>SEX</Sexe>
+                                    <ActionInfo >ACTION</ActionInfo>
                                 </TableBodyNav>
                                 <div >
                                     {Selector_patientState.map(e=>
@@ -79,8 +79,8 @@ export default function Dashboard(){
                                             <Sexe ><P gender={e.sexe}>{e.sexe==="H"?"homme":"femme"}</P></Sexe>
                                             <ActionInfo >
                                                 <form method='post'>
-                                                    <BtnactionLink to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}><i className="fa-solid fa-file-waveform"></i> &nbsp;Add traitement</BtnactionLink>
-                                                    <BtnactionLink to={`dossier/viewpatient/${e.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit patient</BtnactionLink>
+                                                    {/* <BtnactionLink to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}><i className="fa-solid fa-file-waveform"></i> &nbsp;Add traitement</BtnactionLink> */}
+                                                    <BtnactionLink to={`dossier/viewpatient/${e.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit Patient</BtnactionLink>
                                                     <Btnaction type='button' name='archive' onClick={()=>dispatch(archivePatient(e.cin))}><i className='fa-solid fa-box-archive'></i> &nbsp;Archive</Btnaction>
                                                 </form>
                                             </ActionInfo>

@@ -64,10 +64,10 @@ export default function Archive(){
                             </TableHeader>
                             <TableBody >
                                 <TableBodyNav >
-                                    <Cin >cin</Cin>
-                                    <FullName >nom complet</FullName>
-                                    <Sexe>sex</Sexe>
-                                    <ActionInfo >action</ActionInfo>
+                                    <Cin >CIN</Cin>
+                                    <FullName >NOM COMPLET</FullName>
+                                    <Sexe>SEX</Sexe>
+                                    <ActionInfo >ACTION</ActionInfo>
                                 </TableBodyNav>
                                 <div >
                                     {Selector_archivedPatientsState.map(e=>
@@ -78,7 +78,7 @@ export default function Archive(){
                                             <Sexe ><P gender={e.sexe}>{e.sexe==="H"?"homme":"femme"}</P></Sexe>
                                             <ActionInfo >
                                                 <form method='post'>
-                                                    <BtnactionLink to={"../dossier/addpatient"}><i className="fa-solid fa-file-waveform"></i> &nbsp;Add traitement</BtnactionLink>
+                                                    {/* <BtnactionLink to={"../dossier/addpatient"}><i className="fa-solid fa-file-waveform"></i> &nbsp;Add traitement</BtnactionLink> */}
                                                     {/* <Btnaction type='submit' name='archive' ><i className='fa-solid fa-box-archive'></i> &nbsp;X</Btnaction> */}
                                                     <BtnactionLink to={`../dossier/viewpatient/${e.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit patient</BtnactionLink>
                                                 </form>
