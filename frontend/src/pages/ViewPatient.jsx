@@ -222,7 +222,7 @@ export default function Test(){
                                     <Action >action</Action>
                                 </TableHeader>
                                 <TableBody >
-                                    {Selector_TraitementsState.length==0?<Exeption>no traitement</Exeption>:Selector_TraitementsState.map(e=>(
+                                    {Selector_TraitementsState.length===0?<Exeption>no traitement</Exeption>:Selector_TraitementsState.map(e=>(
                                         <BodyRow key={nanoid()}>
                                             <NomMedecin >{e.doctorname}</NomMedecin>
                                             <Date >{e.consultationdate.split('T')[0]}</Date>

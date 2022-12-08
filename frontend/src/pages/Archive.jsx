@@ -26,7 +26,7 @@ export default function Archive(){
         dispatch(getArchivedPatients(skip));
     },[skip])
     useEffect(()=>{
-        if(Selector_archivedPatientsState.length==0 && Selector_archivedPatientsStatus=='success' && currpage!=0){
+        if(Selector_archivedPatientsState.length===0 && Selector_archivedPatientsStatus==='success' && currpage!=0){
             setSkip(prev=>prev-5)
         }
     },[Selector_archivedPatientsState])
@@ -35,11 +35,11 @@ export default function Archive(){
         dispatch(claerarchivedpatient())
     }
     const SkipPage=(action)=>{
-        if(currpage==0){setCurrpage(1)}
-        if(action=='next'){
-            setSkip(prev=>(Selector_archivedPatientsState.length==0?prev:prev+5))
-        }else if(action=='prev'){
-            setSkip(prev=>(prev==0?prev:prev-5));
+        if(currpage===0){setCurrpage(1)}
+        if(action==='next'){
+            setSkip(prev=>(Selector_archivedPatientsState.length===0?prev:prev+5))
+        }else if(action==='prev'){
+            setSkip(prev=>(prev===0?prev:prev-5));
         }
     }
     return(
@@ -221,5 +221,5 @@ const ActionInfo = styled.div`
     width: 350px;
 `
 const P = styled.p`
-    color:${props=>props.gender=='H'?"#2DA9D9":"#B73377"}
+    color:${props=>props.gender==='H'?"#2DA9D9":"#B73377"}
 `

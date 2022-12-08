@@ -56,10 +56,10 @@ export default function Sidebar(){
                     <div >
                         <MenuUl>
                             <NavLinkS to={"/"} >
-                                <MenuLi isActive ={location.pathname=="/"?true:false}><i className="fa-regular fa-folder" style={{"padding": "0 10px"}}></i>Dossier</MenuLi>
+                                <MenuLi isActive ={location.pathname==="/"?true:false}><i className="fa-regular fa-folder" style={{"padding": "0 10px"}}></i>Dossier</MenuLi>
                             </NavLinkS>
                             <NavLinkS to={"/archive"} >
-                                <MenuLi isActive ={location.pathname=="/archive"?true:false}><i className="fa-solid fa-box-archive" style={{"padding": "0 10px"}}></i>Archive</MenuLi>
+                                <MenuLi isActive ={location.pathname==="/archive"?true:false}><i className="fa-solid fa-box-archive" style={{"padding": "0 10px"}}></i>Archive</MenuLi>
                             </NavLinkS>
                         </MenuUl>
                     </div>
@@ -89,7 +89,7 @@ const MenuLi = styled.li`
     display: flex;
     align-items: center;
     ${
-        props=>props.isActive== true?
+        props=>props.isActive=== true?
         `background-color: rgba(180, 172, 172, 0.503);
         border-radius: 0 5px 5px 0px;
         border-left: 4px solid rgb(38, 37, 37);`:""
