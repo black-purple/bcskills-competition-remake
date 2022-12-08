@@ -12,7 +12,13 @@ A simple web app to keep track of patients in a clinic/hospital
 
 - Frontend (SPA):
 
-    >```Under construction```
+    ![ReactJS](https://img.shields.io/static/v1?label=%20&message=ReactJS&color=%2361DAFB&labelColor=%23ff000000&logo=react)
+    ![Redux](https://img.shields.io/static/v1?label=%20&message=Redux&color=%23764ABC&labelColor=%23ff000000&logo=redux&logoColor=%23764ABC)
+    ![React Router](https://img.shields.io/static/v1?label=%20&message=React%20Router&color=%23CA4245&labelColor=%23ff000000&logo=react-router)
+
+- Login System (BaaS):
+
+    ![Firebase](https://img.shields.io/static/v1?label=%20&message=Firebase&color=%23FFCA28&labelColor=%23ff000000&logo=firebase)
 
 ## Contributors
 
