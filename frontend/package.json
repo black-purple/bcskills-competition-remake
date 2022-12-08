@@ -22,7 +22,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "proxy": "http://localhost:3000/"
+    "proxy": "https://healthcare.up.railway.app"
   },
   "eslintConfig": {
     "extends": [
