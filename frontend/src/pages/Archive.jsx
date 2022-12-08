@@ -1,6 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import { useState,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ArchivedPatientsState, claerarchivedpatient, getArchivedPatients, ArchivedPatientsStatus } from "../store/features/patientsSlice";
@@ -11,7 +11,6 @@ export default function Archive(){
     const [skip, setSkip] = useState(0);
     const [currpage, setCurrpage] = useState(0);
     const location = useLocation();
-    const navigate = useNavigate();
     const Selector_archivedPatientsState = useSelector(ArchivedPatientsState)
     const Selector_archivedPatientsStatus = useSelector(ArchivedPatientsStatus)
     const dispatch = useDispatch();
@@ -20,16 +19,16 @@ export default function Archive(){
         dispatch(getArchivedPatients());
         // setSkip(0);//!
         setCurrpage(0);
-    }, [])//!dispatch
+    }, [dispatch])//!dispatch
     useEffect(()=>{
         console.log(skip)
         dispatch(getArchivedPatients(skip));
-    },[skip])
+    },[dispatch, skip])
     useEffect(()=>{
-        if(Selector_archivedPatientsState.length===0 && Selector_archivedPatientsStatus==='success' && currpage!=0){
+        if(Selector_archivedPatientsState.length===0 && Selector_archivedPatientsStatus==='success' && currpage!==0){
             setSkip(prev=>prev-5)
         }
-    },[Selector_archivedPatientsState])
+    },[Selector_archivedPatientsState, Selector_archivedPatientsStatus, currpage])
     console.log(Selector_archivedPatientsStatus)
     const clearArchive = ()=>{
         dispatch(claerarchivedpatient())

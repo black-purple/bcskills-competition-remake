@@ -21,8 +21,8 @@ export default function Login(){
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                const uid = user.uid;
-                console.log(user)
+                // const uid = user.uid;
+                // console.log(user)
                 dispatch(addAdmin({Token: user.accessToken,email:user.email}))
                 dispatch(loggin(1));
             } else {
@@ -32,7 +32,7 @@ export default function Login(){
         if(+Selector_isloggedIn){
             navigate('../../')
         }
-    }, [Selector_isloggedIn/*Selector_adminInfo*/]);
+    }, [Selector_isloggedIn, auth, dispatch, navigate]);
 
 
     console.log('login state:',Selector_isloggedIn)

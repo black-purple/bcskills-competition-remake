@@ -4,7 +4,7 @@ import AddPatient from "./pages/AddPatient";
 import Archive from "./pages/Archive";
 import UpdatePatient from "./pages/UpdatePatient";
 import ViewPatient from "./pages/ViewPatient";
-import Sidebar from "./components/Sidebar";
+// import Sidebar from "./components/Sidebar";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
