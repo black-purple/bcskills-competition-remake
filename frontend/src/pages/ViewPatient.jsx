@@ -5,11 +5,13 @@ import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PatientEditederr, addTraitement, getPatient, PatientState, getTraitements, PatientStatus, editPatient, TraitementsState, TraitementsStatus } from "../store/features/patientsSlice";
 import { useEffect, useState } from "react";
+import useTitleChange from "../hooks/useTitleChange";
 
 export default function Test(){
     const location = useLocation();
     const dispatch = useDispatch();
     const {id} = useParams();
+    useTitleChange("Patient");
     const [Patient,setPatient] = useState({
         address : "",
         alerts: "",

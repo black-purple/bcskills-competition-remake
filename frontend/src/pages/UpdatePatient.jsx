@@ -1,8 +1,10 @@
 import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
 import {Link, useLocation} from "react-router-dom";
+import useTitleChange from "../hooks/useTitleChange";
 export default function Test(){
     const location = useLocation();
+    useTitleChange("Patient Update");
     return(
         <WrapperAll >
             <Wrapper >

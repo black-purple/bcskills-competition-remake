@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import {loggin, addAdmin, islogged, admininfo} from '../../store/features/adminSlice'
 import { useDispatch, useSelector } from "react-redux";
+import useTitleChange from "../../hooks/useTitleChange"
 
 export default function Login(){
     const [email, setEmail] = useState('');
@@ -16,6 +17,7 @@ export default function Login(){
     const Selector_adminInfo = useSelector(admininfo);
     const navigate = useNavigate();
     const auth = getAuth(app);
+    useTitleChange("Login");
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {

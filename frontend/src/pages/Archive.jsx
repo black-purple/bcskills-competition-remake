@@ -5,6 +5,7 @@ import { useState,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ArchivedPatientsState, claerarchivedpatient, getArchivedPatients, ArchivedPatientsStatus } from "../store/features/patientsSlice";
 import { nanoid } from "@reduxjs/toolkit";
+import useTitleChange from "../hooks/useTitleChange";
 
 export default function Archive(){
     const [skip, setSkip] = useState(0);
@@ -14,6 +15,7 @@ export default function Archive(){
     const Selector_archivedPatientsState = useSelector(ArchivedPatientsState)
     const Selector_archivedPatientsStatus = useSelector(ArchivedPatientsStatus)
     const dispatch = useDispatch();
+    useTitleChange("Archive");
     useEffect(() => {
         dispatch(getArchivedPatients());
         // setSkip(0);//!

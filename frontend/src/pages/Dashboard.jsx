@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { claerarchivedpatient, getPatients, PatientsState, PatientsStatus, archivePatient, ArchivePatientsStatus} from "../store/features/patientsSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import { useState } from "react";
+import useTitleChange from "../hooks/useTitleChange";
 
 export default function Dashboard(){
     const [skip, setSkip] = useState(0);
@@ -15,6 +16,7 @@ export default function Dashboard(){
     const Selector_ArchiveActionStatus = useSelector(ArchivePatientsStatus);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    useTitleChange("DashBoard");
     useEffect(() => {
         dispatch(getPatients());
         // setSkip(0);//!
