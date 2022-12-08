@@ -1,24 +1,54 @@
-import {Outlet} from "react-router-dom";
 import styled from "styled-components";
 import {NavLink, useLocation} from "react-router-dom"
 import backgProfile from "../assets/profile.jpg"
+import { useNavigate } from 'react-router-dom'
+import {loggin, addAdmin, islogged, admininfo} from '../store/features/adminSlice'
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+//firebase
+import { getAuth, signOut } from "firebase/auth";
+
 
 export default function Sidebar(){
     const location = useLocation();
+    const navigate = useNavigate();
+    const Selector_isloggedIn = useSelector(islogged);
+    const Selector_adminInfo = useSelector(admininfo);
+
+    const dispatch = useDispatch();
+    //firebase
+    const auth = getAuth();
+    const signout = ()=>{
+        signOut(auth).then(() => {
+            console.log('signout succe')
+            dispatch(loggin(0));
+            console.log('login state in signout:',Selector_isloggedIn)
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+    useEffect(()=>{
+        if(!+Selector_isloggedIn){
+            navigate('/login');
+        }
+        console.log('redd',Selector_isloggedIn)
+    },[Selector_isloggedIn])
+    console.log(Selector_adminInfo)
+    console.log('sidebar login state:',Selector_isloggedIn)
     return(
         <>
             <Sidebarr >
                 <Profile >
                     <ProfileImgName >
                         <ProfileImg ></ProfileImg>
-                        <p>Mossaab</p>
+                        <AdminEmail>{Selector_adminInfo.email}</AdminEmail>
                     </ProfileImgName>
                     <div >
-                        <form method="post">
-                            <LogoutBtn type="submit" name="logout">
+                        {/* <form method="post"> */}
+                            <LogoutBtn type="button" onClick={signout}>
                                 <i className="fa-solid fa-arrow-right-from-bracket"></i>
                             </LogoutBtn>
-                        </form>
+                        {/* </form> */}
                     </div>
                 </Profile>
                 <Menu >
@@ -40,6 +70,11 @@ export default function Sidebar(){
     )
 }
 
+const AdminEmail = styled.p`
+    overflow:hidden;
+    width:140px;
+    text-overflow: ellipsis;
+`
 const LogoutBtn = styled.button`
     border: none;
     padding: .3rem;
