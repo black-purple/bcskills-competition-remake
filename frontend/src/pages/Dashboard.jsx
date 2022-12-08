@@ -211,6 +211,8 @@ const TableBodyInfo = styled.div`
 /* size */
 const Cin = styled.div`
     width: 150px;
+    text-decoration: none;
+    color: black;
 `
 const FullName = styled.div`
     width: 350px;
