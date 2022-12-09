@@ -2,7 +2,7 @@ import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addPatient, /*PatientAddStatus*/ } from "../store/features/patientsSlice";
 import { useEffect, useState } from "react";
 import useTitleChange from "../hooks/useTitleChange";
@@ -27,6 +27,7 @@ export default function Addpatient(){
         ssn: "",
         tel: "",
     })
+    // eslint-disable-next-line no-unused-vars
     const[optt,setoptt] = useState({
         select1:['H','F'],
         select2:['ATLANTIC','SMONO','AMO','CNSS'],
@@ -197,8 +198,8 @@ const FormsContainer = styled.div`
 const PatientHeader = styled.div`
     padding:0 0 40px 0;
 `
-const HeaderTitle = styled.div`
-`
+// const HeaderTitle = styled.div`
+// `
 const HeaderIcon = styled.div`
     font-size: 100px;
     position:relative;

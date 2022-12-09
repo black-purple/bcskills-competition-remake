@@ -24,12 +24,12 @@ export default function Dashboard(){
     }, [Selector_ArchiveActionStatus,dispatch])//?status
     useEffect(()=>{
         dispatch(getPatients(skip));
-    },[skip])
+    },[dispatch, skip])
     useEffect(()=>{
-        if(Selector_patientState.length===0 && Selector_patientStateStatus==='success' && currpage!=0){
+        if(Selector_patientState.length===0 && Selector_patientStateStatus==='success' && currpage!==0){
             setSkip(prev=>prev-5)
         }
-    },[Selector_patientState])
+    },[Selector_patientState, Selector_patientStateStatus, currpage])
     console.log('statussss',Selector_patientStateStatus);
     console.log(Selector_patientState);
     console.log(Selector_ArchiveActionStatus);

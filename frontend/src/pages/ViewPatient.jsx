@@ -27,6 +27,7 @@ export default function Test(){
         ssn: "",
         tel: "",
     })
+    // eslint-disable-next-line no-unused-vars
     const[optt,setoptt] = useState({
         select1:['H','F'],
         select2:['ATLANTIC','SMONO','AMO','CNSS'],
@@ -52,7 +53,7 @@ export default function Test(){
         console.log('call');
         dispatch(getPatient(id))
         dispatch(getTraitements(id))
-    },[dispatch])
+    },[dispatch, id])
     useEffect(()=>{
         setPatient(Selector_PatientState);
         // console.log(Selector_PatientState);
@@ -193,7 +194,7 @@ export default function Test(){
                                     </div>
                                     <div >
                                         <FormLabel Htmlfor="">desision</FormLabel> <br/>
-                                        <FormSelect name="decision" value={Traitement.decision} onChange={(e) => HandleChange(e.target)}>//!value
+                                        <FormSelect name="decision" value={Traitement.decision} onChange={(e) => HandleChange(e.target)}>{/*!value*/}
                                             {
                                                 optt.select3.map(e=>(
                                                 <option value={e} key={nanoid()}>{e}</option>
@@ -291,8 +292,8 @@ const FormsContainer = styled.div`
 const PatientHeader = styled.div`
     padding:0 0 40px 0;
 `
-const HeaderTitle = styled.div`
-`
+// const HeaderTitle = styled.div`
+// `
 const HeaderIcon = styled.div`
     font-size: 100px;
     position:relative;
@@ -302,7 +303,7 @@ const HeaderIcon = styled.div`
         width:150%;
         background:rgba(182, 178, 178, 0.685);
         top:50%;
-        letf:0;
+        left:0;
         position:absolute;
     }
     &:before{
@@ -311,7 +312,7 @@ const HeaderIcon = styled.div`
         width:48px;
         background:rgba(182, 178, 178, 0.685);
         top:50%;
-        letf:0;
+        left:0;
         position:absolute;
         transform: translateX(-100%)
     }

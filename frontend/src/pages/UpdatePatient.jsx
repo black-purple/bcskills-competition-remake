@@ -1,6 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
-import {Link, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import useTitleChange from "../hooks/useTitleChange";
 export default function Test(){
     const location = useLocation();
@@ -180,8 +180,8 @@ const FormsContainer = styled.div`
 const PatientHeader = styled.div`
     padding:0 0 40px 0;
 `
-const HeaderTitle = styled.div`
-`
+// const HeaderTitle = styled.div`
+// `
 const HeaderIcon = styled.div`
     font-size: 100px;
     position:relative;
@@ -191,7 +191,7 @@ const HeaderIcon = styled.div`
         width:150%;
         background:rgba(182, 178, 178, 0.685);
         top:50%;
-        letf:0;
+        left:0;
         position:absolute;
     }
     &:before{
@@ -200,7 +200,7 @@ const HeaderIcon = styled.div`
         width:48px;
         background:rgba(182, 178, 178, 0.685);
         top:50%;
-        letf:0;
+        left:0;
         position:absolute;
         transform: translateX(-100%)
     }

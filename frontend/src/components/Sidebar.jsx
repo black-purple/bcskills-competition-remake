@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {NavLink, useLocation} from "react-router-dom"
 import backgProfile from "../assets/profile.jpg"
 import { useNavigate } from 'react-router-dom'
-import {loggin, addAdmin, islogged, admininfo} from '../store/features/adminSlice'
+import {loggin, islogged, admininfo} from '../store/features/adminSlice'
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 //firebase
@@ -32,7 +32,7 @@ export default function Sidebar(){
             navigate('/login');
         }
         console.log('redd',Selector_isloggedIn)
-    },[Selector_isloggedIn])
+    },[Selector_isloggedIn, navigate])
     console.log(Selector_adminInfo)
     console.log('sidebar login state:',Selector_isloggedIn)
     return(
@@ -144,11 +144,11 @@ const MenuUl = styled.ul`
     /* background-color: aqua; */
     list-style-type: none;
 `
-const MenuActive = styled.div`
-    background-color: rgba(180, 172, 172, 0.503);
-    border-radius: 0 5px 5px 0px;
-    border-left: 4px solid rgb(38, 37, 37);
-`
+// const MenuActive = styled.div`
+//     background-color: rgba(180, 172, 172, 0.503);
+//     border-radius: 0 5px 5px 0px;
+//     border-left: 4px solid rgb(38, 37, 37);
+// `
 // const I = styled(i)`
 // padding: 0 10px;
 // `
