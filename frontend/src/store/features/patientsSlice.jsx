@@ -69,7 +69,7 @@ const initialState = {
     Patients:{
       data:[],
       status:"",
-      loading:false,
+      loading:true,
       errors:""
     },
     Patient:{
@@ -88,7 +88,7 @@ const initialState = {
     ArchivedPatients:{
       data:[],
       status:"",
-      loading:false,
+      loading:true,
       errors:""
     },
     ArchivedPatient:{
@@ -111,26 +111,32 @@ const PatientSlice = createSlice({
       //*getPatients
       [getPatients.pending]: (state, action) => {
         state.value.Patients.status = "loading";
+        state.value.Patients.loading = true;
       },
       [getPatients.fulfilled]: (state, action) => {
         state.value.Patients.data = action.payload;
         state.value.Patients.status = "success";
+        state.value.Patients.loading = false;
       },
       [getPatients.rejected]: (state, action) => {
         state.value.Patients.status = "failed";
         state.value.Patients.errors = action.payload;
+        state.value.Patients.loading = false;
       },
 
       //*getArchivedPatients
       [getArchivedPatients.pending]: (state, action) => {
         state.value.ArchivedPatients.status = "loading";
+        state.value.ArchivedPatients.loading = true;
       },
       [getArchivedPatients.fulfilled]: (state, action) => {
         state.value.ArchivedPatients.data = action.payload;
         state.value.ArchivedPatients.status = "success";
+        state.value.ArchivedPatients.loading = false;
       },
       [getArchivedPatients.rejected]: (state, action) => {
         state.value.ArchivedPatients.status = "failed";
+        state.value.ArchivedPatients.loading = false;
         state.value.ArchivedPatients.errors = action.payload;
       },
 
@@ -215,9 +221,11 @@ export const {claerarchivedpatient} = PatientSlice.actions;
 //patients
 export const PatientsState = state=>state.patients.value.Patients.data;
 export const PatientsStatus = state=>state.patients.value.Patients.status;
+export const PatientsLoading = state=>state.patients.value.Patients.loading;
 //archived patients
 export const ArchivedPatientsState = state=>state.patients.value.ArchivedPatients.data;
 export const ArchivedPatientsStatus = state=>state.patients.value.ArchivedPatients.status;
+export const ArchivedPatientsLoading = state=>state.patients.value.ArchivedPatients.loading;
 //archived patient
 export const PatientState = state=>state.patients.value.Patient.data;
 export const PatientStatus = state=>state.patients.value.Patient.status;

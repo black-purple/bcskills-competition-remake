@@ -1,19 +1,30 @@
 import Sidebar from "../components/Sidebar";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import styled from "styled-components"
 import {Link, useNavigate} from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { claerarchivedpatient, getPatients, PatientsState, PatientsStatus, archivePatient, ArchivePatientsStatus} from "../store/features/patientsSlice";
+import { claerarchivedpatient, getPatients, PatientsState, PatientsStatus, archivePatient, ArchivePatientsStatus, PatientsLoading, getPatient, PatientState, getP} from "../store/features/patientsSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import { useState } from "react";
 import useTitleChange from "../hooks/useTitleChange";
+import {debounce} from "../api/api_helper";
+import api from "../api/api_data";
 
 export default function Dashboard(){
     const [skip, setSkip] = useState(0);
     const [currpage, setCurrpage] = useState(0);
+    const [searchPatientres, setSearchPatientres ] = useState('');
+    const [ searchErr, setSearchErr ] = useState('');//!errr
+    const [ searchall, setSearchall ] = useState( true )
+
     const Selector_patientState = useSelector(PatientsState);
     const Selector_patientStateStatus = useSelector(PatientsStatus);
     const Selector_ArchiveActionStatus = useSelector(ArchivePatientsStatus);
+    const Selector_PatientsLoading = useSelector(PatientsLoading);
+    const Selector_PatientStateSerach = useSelector(PatientState);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useTitleChange("DashBoard");
@@ -22,17 +33,52 @@ export default function Dashboard(){
         // setSkip(0);//!
         setCurrpage(0);
     }, [Selector_ArchiveActionStatus,dispatch])//?status
+    // useEffect(()=>{
+    //     // setLoading(true)
+    //     // const timing = setTimeout(()=>{
+    //     //     setLoading(false)
+    //     // }, 4000)
+    //     // return ()=>clearTimeout(timing)
+    //     console.log(Selector_PatientsLoading)
+    // },[])
+
     useEffect(()=>{
         dispatch(getPatients(skip));
     },[dispatch, skip])
+
     useEffect(()=>{
         if(Selector_patientState.length===0 && Selector_patientStateStatus==='success' && currpage!==0){
             setSkip(prev=>prev-5)
         }
     },[Selector_patientState, Selector_patientStateStatus, currpage])
+    
     console.log('statussss',Selector_patientStateStatus);
     console.log(Selector_patientState);
     console.log(Selector_ArchiveActionStatus);
+
+    const handleSearch = (e)=>{
+        act(e.target.value);
+    }
+    async function getPatientSearch(cin){
+        if(cin.length!=0){
+            const response = await api.get(`/get/patient/${cin}`);
+            setSearchall(false)
+            setSearchPatientres(response.data)
+            if(response.data == 0 ){setSearchErr('patient not found')}
+            else{
+                setSearchErr(0)
+            }
+        }
+        else{
+            setSearchall(true)
+            setSearchPatientres('')
+        }
+        console.log(searchall)
+        console.log(searchall)
+    }
+    const act = debounce(getPatientSearch)
+    console.log(searchPatientres.length)
+
     const SkipPage=(action)=>{
         if(currpage===0){setCurrpage(1)}
         if(action==='next'){
@@ -61,7 +107,7 @@ export default function Dashboard(){
                                     <Btnaction onClick={()=>{navigate('dossier/addpatient')}}><i className="fa-solid fa-user-plus"></i> &nbsp;Add patient</Btnaction>
                                 </div>
                                 <SearchI >
-                                    <SearchInput type="input" placeholder="search"/>
+                                    <SearchInput type="text" placeholder="search" onChange={(e)=>handleSearch(e)}/>
                                 </SearchI>
                             </TableHeader>
                             <TableBody >
@@ -72,21 +118,39 @@ export default function Dashboard(){
                                     <ActionInfo >ACTION</ActionInfo>
                                 </TableBodyNav>
                                 <div >
-                                    {Selector_patientState.map(e=>
-                                    (   <TableBodyInfo key={nanoid()}>
-                                            <Cin ><Link to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}>{e.cin}</Link></Cin>
-                                            <FullName >{e.fullname}</FullName>
-                                            <Sexe ><P gender={e.sexe}>{e.sexe==="H"?"homme":"femme"}</P></Sexe>
+                                    {Selector_PatientsLoading && <TableBodyInfo key={nanoid()}>
+                                        <Cin onClick={clearArchive}>{<Skeleton width={70}/>}</Cin>
+                                        <FullName >{<Skeleton width={200}/>}</FullName>
+                                        <Sexe ><P>{<Skeleton width={70}/>}</P></Sexe>
+                                        <ActionInfo >
+                                                {<Skeleton width={70} />}&nbsp;
+                                                {<Skeleton width={70}/>}
+                                        </ActionInfo>
+                                    </TableBodyInfo>}
+                                    {!Selector_PatientsLoading && (searchPatientres.length==0 && searchall===true)?
+                                    Selector_patientState.map(e=>
+                                        (   <TableBodyInfo key={nanoid()}>
+                                                <Cin ><Link to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}>{e.cin}</Link></Cin>
+                                                <FullName >{e.fullname}</FullName>
+                                                <Sexe ><P gender={e.sexe}>{e.sexee ==="H"?"homme":"femme"}</P></Sexe>
+                                                <ActionInfo >
+                                                        <BtnactionLink to={`dossier/viewpatient/${e.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit Patient</BtnactionLink>
+                                                        <Btnaction type='button' name='archive' onClick={()=>dispatch(archivePatient(e.cin))}><i className='fa-solid fa-box-archive'></i> &nbsp;Archive</Btnaction>
+                                                </ActionInfo>
+                                            </TableBodyInfo>
+                                        )
+                                        )
+                                    :   searchErr?searchErr:
+                                        <TableBodyInfo key={nanoid()}>
+                                            <Cin ><Link to={`dossier/viewpatient/${searchPatientres.cin}`} onClick={clearArchive}>{searchPatientres.cin}</Link></Cin>
+                                            <FullName >{searchPatientres.fullname}</FullName>
+                                            <Sexe ><P gender={searchPatientres.sexe}>{searchPatientres.sexee ==="H"?"homme":"femme"}</P></Sexe>
                                             <ActionInfo >
-                                                <form method='post'>
-                                                    {/* <BtnactionLink to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}><i className="fa-solid fa-file-waveform"></i> &nbsp;Add traitement</BtnactionLink> */}
-                                                    <BtnactionLink to={`dossier/viewpatient/${e.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit Patient</BtnactionLink>
-                                                    <Btnaction type='button' name='archive' onClick={()=>dispatch(archivePatient(e.cin))}><i className='fa-solid fa-box-archive'></i> &nbsp;Archive</Btnaction>
-                                                </form>
+                                                    <BtnactionLink to={`dossier/viewpatient/${searchPatientres.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit Patient</BtnactionLink>
+                                                    <Btnaction type='button' name='archive' onClick={()=>dispatch(archivePatient(searchPatientres.cin))}><i className='fa-solid fa-box-archive'></i> &nbsp;Archive</Btnaction>
                                             </ActionInfo>
                                         </TableBodyInfo>
-                                    )
-                                    )}
+                                    }
                                 </div>
                             </TableBody>
                             <Btnaction type='button' onClick={()=>SkipPage('prev')}><i className="fa-solid fa-caret-left" ></i></Btnaction>
@@ -221,7 +285,9 @@ const Sexe = styled.div`
     width: 250px;
 `
 const ActionInfo = styled.div`
-    // width: 350px;
+    width: 350px;
+    // background:red;
+    display: flex;
 `
 const P = styled.p`
     color:${props=>props.gender==='H'?"#2DA9D9":"#B73377"}

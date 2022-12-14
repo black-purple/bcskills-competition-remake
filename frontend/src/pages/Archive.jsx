@@ -1,9 +1,11 @@
 import Sidebar from "../components/Sidebar";
 import styled from "styled-components";
 import {Link, useLocation} from "react-router-dom";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { useState,useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ArchivedPatientsState, claerarchivedpatient, getArchivedPatients, ArchivedPatientsStatus } from "../store/features/patientsSlice";
+import { ArchivedPatientsState, claerarchivedpatient, getArchivedPatients, ArchivedPatientsStatus, ArchivedPatientsLoading } from "../store/features/patientsSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import useTitleChange from "../hooks/useTitleChange";
 
@@ -13,6 +15,8 @@ export default function Archive(){
     const location = useLocation();
     const Selector_archivedPatientsState = useSelector(ArchivedPatientsState)
     const Selector_archivedPatientsStatus = useSelector(ArchivedPatientsStatus)
+    const Selector_ArchivedPatientsLoading = useSelector(ArchivedPatientsLoading);
+    console.log('#################',Selector_ArchivedPatientsLoading,'#################')
     const dispatch = useDispatch();
     useTitleChange("Archive");
     useEffect(() => {
@@ -69,18 +73,23 @@ export default function Archive(){
                                     <ActionInfo >ACTION</ActionInfo>
                                 </TableBodyNav>
                                 <div >
-                                    {Selector_archivedPatientsState.map(e=>
+                                {Selector_ArchivedPatientsLoading && 
+                                    <TableBodyInfo key={nanoid()}>
+                                        <Cin onClick={clearArchive}>{<Skeleton width={70}/>}</Cin>
+                                        <FullName >{<Skeleton width={200}/>}</FullName>
+                                        <Sexe ><P>{<Skeleton width={70}/>}</P></Sexe>
+                                        <ActionInfo >
+                                                {<Skeleton width={70} />}
+                                        </ActionInfo>
+                                    </TableBodyInfo>}
+                                    {!Selector_ArchivedPatientsLoading && Selector_archivedPatientsState.map(e=>
                                     (
                                         <TableBodyInfo key={nanoid()}>
                                             <Cin ><Link to={`../dossier/viewpatient/${e.cin}`} onClick={()=>dispatch(claerarchivedpatient())}>{e.cin}</Link></Cin>
                                             <FullName >{e.fullname}</FullName>
                                             <Sexe ><P gender={e.sexe}>{e.sexe==="H"?"homme":"femme"}</P></Sexe>
                                             <ActionInfo >
-                                                <form method='post'>
-                                                    {/* <BtnactionLink to={"../dossier/addpatient"}><i className="fa-solid fa-file-waveform"></i> &nbsp;Add traitement</BtnactionLink> */}
-                                                    {/* <Btnaction type='submit' name='archive' ><i className='fa-solid fa-box-archive'></i> &nbsp;X</Btnaction> */}
                                                     <BtnactionLink to={`../dossier/viewpatient/${e.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit patient</BtnactionLink>
-                                                </form>
                                             </ActionInfo>
                                         </TableBodyInfo>
                                     )

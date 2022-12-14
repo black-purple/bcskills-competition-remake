@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import {loggin, addAdmin, islogged, admininfo} from '../../store/features/adminSlice'
 import { useDispatch, useSelector } from "react-redux";
 import useTitleChange from "../../hooks/useTitleChange"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login(){
     const [email, setEmail] = useState('');
@@ -47,7 +49,9 @@ export default function Login(){
         })
         .catch((error) => {
             const errorMessage = error.message;
-            alert(errorMessage);
+            // alert(errorMessage);
+            const notify = ()=>toast.error(errorMessage.split('/')[1].replace(")", ""))
+            notify();
         });
     }
     return(
@@ -73,6 +77,7 @@ export default function Login(){
                     </form>
                 </div>
             </LoginContainer>
+            <ToastContainer />
         </LoginBody>
     )
 }
