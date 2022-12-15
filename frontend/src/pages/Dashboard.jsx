@@ -132,7 +132,7 @@ export default function Dashboard(){
                                         (   <TableBodyInfo key={nanoid()}>
                                                 <Cin ><Link to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}>{e.cin}</Link></Cin>
                                                 <FullName >{e.fullname}</FullName>
-                                                <Sexe ><P gender={e.sexe}>{e.sexee ==="H"?"homme":"femme"}</P></Sexe>
+                                                <Sexe ><P gender={e.sexe}>{e.sexe ==="H"?"homme":"femme"}</P></Sexe>
                                                 <ActionInfo >
                                                         <BtnactionLink to={`dossier/viewpatient/${e.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit Patient</BtnactionLink>
                                                         <Btnaction type='button' name='archive' onClick={()=>dispatch(archivePatient(e.cin))}><i className='fa-solid fa-box-archive'></i> &nbsp;Archive</Btnaction>
