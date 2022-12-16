@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { PatientEditederr, addTraitement, getPatient, PatientState, getTraitements, PatientStatus, editPatient, TraitementsState, TraitementsStatus, editTraitement } from "../store/features/patientsSlice";
+import { PatientEditederr, addTraitement, TreitementErr, getPatient, PatientState, getTraitements, PatientStatus, editPatient, TraitementsState, TraitementsStatus, editTraitement } from "../store/features/patientsSlice";
 import { useEffect, useState } from "react";
 import useTitleChange from "../hooks/useTitleChange";
 
@@ -48,6 +48,7 @@ export default function Test(){
     const Selector_PatientState = useSelector(PatientState);
     const Selector_PatientStatus = useSelector(PatientStatus);
     const Selector_PatientEditederr = useSelector(PatientEditederr);
+    const Selector_TreitementErr = useSelector(TreitementErr);
     console.log(Selector_PatientEditederr);
     console.log("patient:",Selector_PatientStatus);
     console.log("traitement:",Selector_TraitementsStatus);
@@ -79,12 +80,19 @@ export default function Test(){
     }
     const HandleSubmitEditTraitement = (e)=>{
         e.preventDefault();
-        dispatch(editTraitement(Traitement))
-        console.log(Traitement.treatmentid)
+        console.log('berore the chaos:',Traitement)
+        dispatch(editTraitement({...Traitement}))
+        console.log('id modifer:',Traitement.treatmentid)
+        console.log('traitement:',Traitement)
+        console.log(Selector_TreitementErr)
     }
     const ShowTraitement = (e)=>{
         setTraitement(e)
         console.log(e)
+        setTraitement(prev=>({...prev,treatmentid:e.treatmentid}))
+        console.log('id clicked:',Traitement.treatmentid)
+        console.log('id e:',e.treatmentid)
+        console.log('traitemnt:',Traitement)
     }
     return(
         <WrapperAll >
@@ -195,8 +203,8 @@ export default function Test(){
                                         <DateInput type="text" name="consultationdetails" value={Traitement.consultationdetails} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                     <div >
-                                        <FormLabel Htmlfor="">consultation details</FormLabel> <br/>
-                                        <DateInput type="date" name="consultationdate" value={Traitement.consultationdate} onChange={(e) => HandleChange(e.target)}/>
+                                        <FormLabel Htmlfor="">consultation date</FormLabel> <br/>
+                                        <DateInput type="date" name="consultationdate" value={Traitement.consultationdate.split('T')[0]} onChange={(e) => HandleChange(e.target)}/>
                                     </div>
                                 </FormRow>
                                 <FormRow >

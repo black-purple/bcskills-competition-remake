@@ -47,7 +47,7 @@ export const archivePatient = createAsyncThunk(
   }
 )
 export const editTraitement = createAsyncThunk(
-  "add/patient",
+  "edit/traotement",
   async (data)=>{
     const response = await api.put(`/edit/treatment/${data.treatmentid}`,data);
     return response.data;
@@ -227,6 +227,8 @@ const PatientSlice = createSlice({
       },
       [editTraitement.fulfilled]: (state, action) => {
         const index = state.value.Traitement.data.findIndex(obj => obj.treatmentid === action.payload.treatmentid);
+        // console.log(index)
+        console.log('in the state',action.payload)
         state.value.Traitement.data[index] = action.payload;
         state.value.Traitement.status = "success";
       },
@@ -256,3 +258,5 @@ export const TraitementsState = state=>state.patients.value.Traitement.data;
 export const TraitementsStatus = state=>state.patients.value.Traitement.status;
 //edit patient
 export const PatientEditederr = state=>state.patients.value.Patient.edited.errors;
+//edit traitemtn
+export const TreitementErr = state=>state.patients.value.Traitement.errors;

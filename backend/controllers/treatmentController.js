@@ -15,8 +15,8 @@ async function getPatientTreatments(req, res) {
 }
 
 async function editTreatment(req, res) {
-    const { doctorname, consultationdate, consultationdetails, conclusion, decision } = req.body;
-    const { treatmentid } = req.params;
+    const { treatmentid, doctorname, consultationdate, consultationdetails, conclusion, decision } = req.body;
+    // const { treatmentid } = req.params;
     await Treatment.update(
         { doctorname, consultationdate, consultationdetails, conclusion, decision },
         { where: { treatmentid } }
