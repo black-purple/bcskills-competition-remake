@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { PatientEditederr, addTraitement, getPatient, PatientState, getTraitements, PatientStatus, editPatient, TraitementsState, TraitementsStatus } from "../store/features/patientsSlice";
+import { PatientEditederr, addTraitement, getPatient, PatientState, getTraitements, PatientStatus, editPatient, TraitementsState, TraitementsStatus, editTraitement } from "../store/features/patientsSlice";
 import { useEffect, useState } from "react";
 import useTitleChange from "../hooks/useTitleChange";
 
@@ -39,8 +39,10 @@ export default function Test(){
         consultationdetails: "",
         conclusion: "",
         decision: "",
-        patient:id
+        patient:id,
+        treatmentid:''
     })
+    const [action, setAction] = useState(true);
     const Selector_TraitementsState = useSelector(TraitementsState);
     const Selector_TraitementsStatus = useSelector(TraitementsStatus);
     const Selector_PatientState = useSelector(PatientState);
@@ -74,6 +76,15 @@ export default function Test(){
         console.log(Traitement);
         const {doctorname, consultationdate, consultationdetails, conclusion, decision, patient} = Traitement;
         dispatch(addTraitement({doctorname, consultationdate, consultationdetails, conclusion, decision, patient}));
+    }
+    const HandleSubmitEditTraitement = (e)=>{
+        e.preventDefault();
+        dispatch(editTraitement(Traitement))
+        console.log(Traitement.treatmentid)
+    }
+    const ShowTraitement = (e)=>{
+        setTraitement(e)
+        console.log(e)
     }
     return(
         <WrapperAll >
@@ -173,6 +184,7 @@ export default function Test(){
                         <FormsContainer >
                             <FormTitle >Traitements : </FormTitle>
                             <FormDiv  action="">
+                                
                                 <FormRow >
                                     <div >
                                         <FormLabel Htmlfor="">doctor name</FormLabel> <br/>
@@ -204,8 +216,9 @@ export default function Test(){
                                         
                                     </div>
                                 </FormRow>
+                                
                                 <Wbtn istraitement={false}>
-                                    <UpdateBtn color="#5c73db" type="submit" name="addp" /*onClick={(e)=>HandleSubmitTraitement(e)}*/> update Traitements</UpdateBtn>
+                                    <UpdateBtn color="#5c73db" type="submit" onClick={(e)=>HandleSubmitEditTraitement(e)}> update Traitements</UpdateBtn>
                                     <UpdateBtn color="#5c73db" type="submit" name="addp"onClick={(e)=>HandleSubmitTraitement(e)}> Ajouter Traitements</UpdateBtn>
                                 </Wbtn>
                             
@@ -229,7 +242,7 @@ export default function Test(){
                                             <Date >{e.consultationdate.split('T')[0]}</Date>
                                             <Conclusion >{e.conclusion}</Conclusion>
                                             <Decisions >{e.decision}</Decisions>
-                                            <Action ><i className="fa-solid fa-pen-to-square"></i></Action>
+                                            <Action onClick={()=>ShowTraitement(e)}><i className="fa-solid fa-pen-to-square"></i></Action>
                                         </BodyRow>
                                     ))}
 

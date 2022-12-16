@@ -24,7 +24,6 @@ async function editTreatment(req, res) {
     const foundTreatment = await Treatment.findOne({ where: { treatmentid } });
     res.status(200).json(foundTreatment);
 }
-//!cin => treatementid
 export {
     newTreatment,
     editTreatment,
