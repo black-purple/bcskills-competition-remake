@@ -5,7 +5,7 @@ import styled from "styled-components"
 import {Link, useNavigate} from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { claerarchivedpatient, getPatients, PatientsState, PatientsStatus, archivePatient, ArchivePatientsStatus, PatientsLoading, getPatient, PatientState, getP} from "../store/features/patientsSlice";
+import { claerarchivedpatient, getPatients, PatientsState, PatientsStatus, archivePatient, ArchivePatientsStatus, PatientsLoading} from "../store/features/patientsSlice";
 import { nanoid } from "@reduxjs/toolkit";
 import { useState } from "react";
 import useTitleChange from "../hooks/useTitleChange";
@@ -23,7 +23,7 @@ export default function Dashboard(){
     const Selector_patientStateStatus = useSelector(PatientsStatus);
     const Selector_ArchiveActionStatus = useSelector(ArchivePatientsStatus);
     const Selector_PatientsLoading = useSelector(PatientsLoading);
-    const Selector_PatientStateSerach = useSelector(PatientState);
+    // const Selector_PatientStateSerach = useSelector(PatientState);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -60,11 +60,11 @@ export default function Dashboard(){
         act(e.target.value);
     }
     async function getPatientSearch(cin){
-        if(cin.length!=0){
+        if(cin.length!==0){
             const response = await api.get(`/get/patient/${cin}`);
             setSearchall(false)
             setSearchPatientres(response.data)
-            if(response.data == 0 ){setSearchErr('patient not found')}
+            if(response.data === 0 ){setSearchErr('patient not found')}
             else{
                 setSearchErr(0)
             }
@@ -127,7 +127,7 @@ export default function Dashboard(){
                                                 {<Skeleton width={70}/>}
                                         </ActionInfo>
                                     </TableBodyInfo>}
-                                    {!Selector_PatientsLoading && (searchPatientres.length==0 && searchall===true)?
+                                    {!Selector_PatientsLoading && ((searchPatientres.length===0 && searchall===true)?
                                     Selector_patientState.map(e=>
                                         (   <TableBodyInfo key={nanoid()}>
                                                 <Cin ><Link to={`dossier/viewpatient/${e.cin}`} onClick={clearArchive}>{e.cin}</Link></Cin>
@@ -144,12 +144,12 @@ export default function Dashboard(){
                                         <TableBodyInfo key={nanoid()}>
                                             <Cin ><Link to={`dossier/viewpatient/${searchPatientres.cin}`} onClick={clearArchive}>{searchPatientres.cin}</Link></Cin>
                                             <FullName >{searchPatientres.fullname}</FullName>
-                                            <Sexe ><P gender={searchPatientres.sexe}>{searchPatientres.sexee ==="H"?"homme":"femme"}</P></Sexe>
+                                            <Sexe ><P gender={searchPatientres.sexe}>{searchPatientres.sexe ==="H"?"homme":"femme"}</P></Sexe>
                                             <ActionInfo >
                                                     <BtnactionLink to={`dossier/viewpatient/${searchPatientres.cin}`} type='submit' name='archive' onClick={clearArchive}><i className="fa-solid fa-pen-to-square"></i> &nbsp;Edit Patient</BtnactionLink>
                                                     <Btnaction type='button' name='archive' onClick={()=>dispatch(archivePatient(searchPatientres.cin))}><i className='fa-solid fa-box-archive'></i> &nbsp;Archive</Btnaction>
                                             </ActionInfo>
-                                        </TableBodyInfo>
+                                        </TableBodyInfo>)
                                     }
                                 </div>
                             </TableBody>
